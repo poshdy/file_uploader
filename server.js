@@ -3,9 +3,9 @@ const fs = require("node:fs/promises");
 
 const server = net.createServer(() => {});
 
-let fileHandler, stream;
 server.on("connection", (socket) => {
   console.log("New Connection!");
+  let fileHandler, stream;
 
   socket.on("data", async (data) => {
     if (!fileHandler) {
