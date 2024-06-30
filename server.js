@@ -10,11 +10,15 @@ server.on("connection", (socket) => {
   socket.on("data", async (data) => {
     if (!fileHandler) {
       socket.pause();
-      fileHandler = await fs.open(`./storage/test.txt`, "w");
+
+      const indexOfDivider = data.indexOf("-------");
+      const fileName = data.subarray(10, indexOfDivider).toString("utf-8");
+      console.log(fileName);
+      fileHandler = await fs.open(`./storage/${fileName}`, "w");
       stream = fileHandler.createWriteStream();
 
-      stream.write(data);
-      
+      stream.write(data.subarray(indexOfDivider + 7));
+
       socket.resume();
       stream.on("drain", () => {
         socket.resume();
